@@ -1,0 +1,56 @@
+using System;
+using System.Collections.Generic;
+
+namespace RestorantOtomasyon_2
+{
+    // 1. Veri Modelleri (Hocanın istediği yapı)
+    public class Personel { public int Id { get; set; } public string AdSoyad { get; set; } public string Gorev { get; set; } public string Telefon { get; set; } }
+    public class Menu { public int Id { get; set; } public string UrunAd { get; set; } public string Kategori { get; set; } public decimal Fiyat { get; set; } }
+    public class Masa { public int Id { get; set; } public string MasaAdi { get; set; } public string Durum { get; set; } }
+
+    // 2. 11. Hafta Ödevi: Sahte Veri Üreten Ana Sınıf
+    public static class SahteVeriServisi
+    {
+        public static List<Personel> PersonelListesi = new List<Personel>();
+        public static List<Menu> MenuListesi = new List<Menu>();
+        public static List<Masa> MasaListesi = new List<Masa>();
+
+        public static void VerileriYukle()
+        {
+            // Liste temizleme (Tekrar eklemeyi önlemek için)
+            PersonelListesi.Clear();
+            MenuListesi.Clear();
+            MasaListesi.Clear();
+
+            // PERSONEL TABLOSU (En az 10 Satır)
+            PersonelListesi.Add(new Personel { Id = 1, AdSoyad = "Cemre Su Liman", Gorev = "Yönetici", Telefon = "0530 000 00 01" });
+            PersonelListesi.Add(new Personel { Id = 2, AdSoyad = "Salim Berber", Gorev = "Şef", Telefon = "0530 000 00 02" });
+            PersonelListesi.Add(new Personel { Id = 3, AdSoyad = "Salim Cem Altın", Gorev = "Kasiyer", Telefon = "0530 000 00 03" });
+            PersonelListesi.Add(new Personel { Id = 4, AdSoyad = "Osman Yıldırım", Gorev = "Garson", Telefon = "0530 000 00 04" });
+            PersonelListesi.Add(new Personel { Id = 5, AdSoyad = "Ahmet Yılmaz", Gorev = "Garson", Telefon = "0530 000 00 05" });
+            PersonelListesi.Add(new Personel { Id = 6, AdSoyad = "Fatma Kaya", Gorev = "Garson", Telefon = "0530 000 00 06" });
+            PersonelListesi.Add(new Personel { Id = 7, AdSoyad = "Mehmet Demir", Gorev = "Aşçı", Telefon = "0530 000 00 07" });
+            PersonelListesi.Add(new Personel { Id = 8, AdSoyad = "Zeynep Çelik", Gorev = "Kommi", Telefon = "0530 000 00 08" });
+            PersonelListesi.Add(new Personel { Id = 9, AdSoyad = "Caner Öz", Gorev = "Kurye", Telefon = "0530 000 00 09" });
+            PersonelListesi.Add(new Personel { Id = 10, AdSoyad = "Selin Nur", Gorev = "Garson", Telefon = "0530 000 00 10" });
+
+            // MENU TABLOSU (En az 10 Satır)
+            MenuListesi.Add(new Menu { Id = 1, UrunAd = "Hamburger", Kategori = "Yiyecek", Fiyat = 120.00m });
+            MenuListesi.Add(new Menu { Id = 2, UrunAd = "Pizza Margaritha", Kategori = "Yiyecek", Fiyat = 180.00m });
+            MenuListesi.Add(new Menu { Id = 3, UrunAd = "Adana Kebap", Kategori = "Yiyecek", Fiyat = 250.00m });
+            MenuListesi.Add(new Menu { Id = 4, UrunAd = "Mercimek Çorbası", Kategori = "Çorba", Fiyat = 60.00m });
+            MenuListesi.Add(new Menu { Id = 5, UrunAd = "Kola 330ml", Kategori = "İçecek", Fiyat = 45.00m });
+            MenuListesi.Add(new Menu { Id = 6, UrunAd = "Ayran", Kategori = "İçecek", Fiyat = 25.00m });
+            MenuListesi.Add(new Menu { Id = 7, UrunAd = "Sütlaç", Kategori = "Tatlı", Fiyat = 80.00m });
+            MenuListesi.Add(new Menu { Id = 8, UrunAd = "Künefe", Kategori = "Tatlı", Fiyat = 110.00m });
+            MenuListesi.Add(new Menu { Id = 9, UrunAd = "Sezar Salata", Kategori = "Salata", Fiyat = 130.00m });
+            MenuListesi.Add(new Menu { Id = 10, UrunAd = "Türk Kahvesi", Kategori = "İçecek", Fiyat = 50.00m });
+
+            // MASALAR TABLOSU (En az 10 Satır)
+            for (int i = 1; i <= 12; i++)
+            {
+                MasaListesi.Add(new Masa { Id = i, MasaAdi = "Masa " + i, Durum = "Boş" });
+            }
+        }
+    }
+}

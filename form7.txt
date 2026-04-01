@@ -1,0 +1,97 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace RestorantOtomasyon_2
+{
+    public partial class Form7 : Form
+    {
+        DataGridView dgvPersonel = new DataGridView();
+
+        public Form7()
+        {
+            InitializeComponent();
+            PersonelPaneliniTasarla();
+        }
+
+        private void PersonelPaneliniTasarla()
+        {
+            // Form Genel Ayarları
+            this.Text = "PERSONEL YÖNETİMİ";
+            this.Size = new Size(500, 600);
+            this.BackColor = Color.FromArgb(20, 20, 20); // Siyah Arka Plan
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+
+            // --- ÜST BUTONLAR (EKLE - GÜNCELLE - SİL) ---
+            Panel pnlButtons = new Panel { Dock = DockStyle.Top, Height = 80, Padding = new Padding(10) };
+
+            Button btnEkle = ButonOlustur("PERSONEL EKLE", 10, 20, 130);
+            Button btnGuncelle = ButonOlustur("PERSONEL GÜNCELLE", 150, 20, 160);
+            Button btnSil = ButonOlustur("SİL", 320, 20, 80);
+
+            pnlButtons.Controls.Add(btnEkle);
+            pnlButtons.Controls.Add(btnGuncelle);
+            pnlButtons.Controls.Add(btnSil);
+            this.Controls.Add(pnlButtons);
+
+            // --- PERSONEL TABLOSU (DataGridView) ---
+            dgvPersonel.Location = new Point(20, 100);
+            dgvPersonel.Size = new Size(445, 350);
+            dgvPersonel.BackgroundColor = Color.Black;
+            dgvPersonel.ForeColor = Color.White;
+            dgvPersonel.GridColor = Color.Gray;
+            dgvPersonel.BorderStyle = BorderStyle.Fixed3D;
+            dgvPersonel.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvPersonel.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
+            dgvPersonel.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+            dgvPersonel.EnableHeadersVisualStyles = false;
+            dgvPersonel.RowHeadersVisible = false;
+
+            // Sütunları Oluştur
+            dgvPersonel.ColumnCount = 4;
+            dgvPersonel.Columns[0].Name = "ID";
+            dgvPersonel.Columns[1].Name = "AD SOYAD";
+            dgvPersonel.Columns[2].Name = "GÖREV";
+            dgvPersonel.Columns[3].Name = "TELEFON";
+
+            // Örnek Verileri Ekle (Görseldeki Gibi)
+            dgvPersonel.Rows.Add("1", "SALİM BERBER", "YÖNETİCİ", "0530 000 00 11");
+            dgvPersonel.Rows.Add("2", "SELİN NUR", "KASİYER", "0543 222 22 22");
+            dgvPersonel.Rows.Add("3", "KAMİL AY", "KOMİ", "0538 111 11 11");
+            dgvPersonel.Rows.Add("4", "CEMRE BERBER", "GARSON", "0530 000 00 00");
+
+            this.Controls.Add(dgvPersonel);
+
+            // --- ANA MENÜYE DÖN BUTONU ---
+            Button btnGeri = new Button
+            {
+                Text = "ANA MENÜYE DÖN",
+                Size = new Size(200, 45),
+                Location = new Point(140, 480),
+                BackColor = Color.FromArgb(80, 110, 170), // Mavi tonu
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+            btnGeri.Click += (s, e) => { this.Close(); Application.OpenForms["Form2"].Show(); };
+            this.Controls.Add(btnGeri);
+        }
+
+        // Tasarımdaki siyah-beyaz butonlar için yardımcı metod
+        private Button ButonOlustur(string metin, int x, int y, int genislik)
+        {
+            return new Button
+            {
+                Text = metin,
+                Location = new Point(x, y),
+                Size = new Size(genislik, 40),
+                BackColor = Color.Black,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderColor = Color.White, BorderSize = 1 },
+                Font = new Font("Segoe UI", 8, FontStyle.Bold)
+            };
+        }
+    }
+}

@@ -1,0 +1,127 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace RestorantOtomasyon_2
+{
+    public partial class Form9 : Form
+    {
+        Panel pnlSolMenu = new Panel();
+        Panel pnlSagIcerik = new Panel();
+
+        public Form9()
+        {
+            InitializeComponent();
+            this.Size = new Size(1000, 700);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = Color.FromArgb(15, 15, 15);
+            LayoutOlustur();
+        }
+
+        private void LayoutOlustur()
+        {
+            // 1. Sol Menü Paneli
+            pnlSolMenu.Dock = DockStyle.Left;
+            pnlSolMenu.Width = 280;
+            pnlSolMenu.BackColor = Color.FromArgb(25, 25, 25);
+            pnlSolMenu.AutoScroll = true;
+            this.Controls.Add(pnlSolMenu);
+
+            // 2. Sağ İçerik Paneli (Görsellerin geleceği yer)
+            pnlSagIcerik.Dock = DockStyle.Fill;
+            pnlSagIcerik.BackColor = Color.FromArgb(15, 15, 15);
+            pnlSagIcerik.Padding = new Padding(20);
+            this.Controls.Add(pnlSagIcerik);
+
+            // 3. Butonları Sol Menüye Dizelim
+            string[] butonlar = { "SİSTEM AYARLARI", "LOG KAYITLARI", "YEDEKLEME", "MUTFAK DURUMU",
+                                 "İNDİRİM KODLARI", "MÜŞTERİ YORUMLARI", "MENÜ PERFORMANSI",
+                                 "GELİR-GİDER", "MASA ANALİZİ", "PERSONEL TAKİP",
+                                 "STOK DURUMU", "GÜNLÜK SATIŞLAR" };
+
+            // Butonları aşağıdan yukarıya doğru ekliyoruz (Dock.Top olduğu için)
+            foreach (string metin in butonlar)
+            {
+                Button btn = new Button();
+                btn.Text = metin;
+                btn.Dock = DockStyle.Top;
+                btn.Height = 50;
+                btn.FlatStyle = FlatStyle.Flat;
+                btn.ForeColor = Color.White;
+                btn.FlatAppearance.BorderColor = Color.DimGray;
+                btn.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                btn.Click += MenuButon_Click;
+                pnlSolMenu.Controls.Add(btn);
+            }
+
+            // En alta "ANA MENÜYE DÖN" Butonu
+            Button btnGeri = new Button();
+            btnGeri.Text = "ANA MENÜYE DÖN";
+            btnGeri.Dock = DockStyle.Bottom;
+            btnGeri.Height = 60;
+            btnGeri.BackColor = Color.FromArgb(80, 110, 170);
+            btnGeri.ForeColor = Color.White;
+            btnGeri.FlatStyle = FlatStyle.Flat;
+            btnGeri.Click += (s, e) => { this.Close(); Application.OpenForms["Form2"].Show(); };
+            this.Controls.Add(btnGeri);
+        }
+
+        private void MenuButon_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            IcerikDegistir(btn.Text);
+        }
+
+        private void IcerikDegistir(string baslik)
+        {
+            pnlSagIcerik.Controls.Clear();
+
+            Label lblBaslik = new Label();
+            lblBaslik.Text = baslik;
+            lblBaslik.Dock = DockStyle.Top;
+            lblBaslik.Height = 50;
+            lblBaslik.ForeColor = Color.Gold;
+            lblBaslik.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+            lblBaslik.TextAlign = ContentAlignment.MiddleCenter;
+            pnlSagIcerik.Controls.Add(lblBaslik);
+
+            // ÖRNEK: "PERSONEL TAKİP" tıklandığında senin fotoğrafındaki tabloyu getirir
+            if (baslik == "PERSONEL TAKİP")
+            {
+                DataGridView dgv = TabloOlustur();
+                dgv.Columns.Add("id", "ID");
+                dgv.Columns.Add("ad", "AD SOYAD");
+                dgv.Columns.Add("gor", "GÖREV");
+                dgv.Columns.Add("tel", "TELEFON");
+                dgv.Rows.Add("1", "SALİM BERBER", "YÖNETİCİ", "0530 000 00 11");
+                dgv.Rows.Add("2", "SELİN NUR", "KASİYER", "0543 222 22 22");
+                pnlSagIcerik.Controls.Add(dgv);
+            }
+            // ÖRNEK: "STOK DURUMU" tıklandığında ürün yönetimini getirir
+            else if (baslik == "STOK DURUMU")
+            {
+                DataGridView dgv = TabloOlustur();
+                dgv.Columns.Add("id", "ID");
+                dgv.Columns.Add("ad", "ÜRÜN ADI");
+                dgv.Columns.Add("kat", "KATEGORİ");
+                dgv.Columns.Add("fiyat", "FİYAT");
+                dgv.Rows.Add("1", "HAMBURGER", "YİYECEK", "90 TL");
+                pnlSagIcerik.Controls.Add(dgv);
+            }
+        }
+
+        private DataGridView TabloOlustur()
+        {
+            DataGridView dgv = new DataGridView();
+            dgv.Dock = DockStyle.Fill;
+            dgv.BackgroundColor = Color.FromArgb(20, 20, 20);
+            dgv.ForeColor = Color.White;
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+            return dgv;
+        }
+    }
+}

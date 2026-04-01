@@ -1,0 +1,107 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace RestorantOtomasyon_2
+{
+    public partial class Form8 : Form
+    {
+        DataGridView dgvUrunler = new DataGridView();
+
+        public Form8()
+        {
+            InitializeComponent();
+            UrunPaneliniHazirla();
+        }
+
+        private void UrunPaneliniHazirla()
+        {
+            // Form Ayarları
+            this.Text = "ÜRÜN YÖNETİMİ";
+            this.Size = new Size(550, 650);
+            this.BackColor = Color.FromArgb(15, 15, 15);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            // --- ÜST BAŞLIK ---
+            Label lblBaslik = new Label
+            {
+                Text = "MENÜ / ÜRÜN YÖNETİMİ",
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                Size = new Size(490, 60),
+                Location = new Point(25, 20),
+                TextAlign = ContentAlignment.MiddleCenter,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            this.Controls.Add(lblBaslik);
+
+            // --- İŞLEM BUTONLARI ---
+            Button btnEkle = ButonStiliVer("ÜRÜN EKLE", 25, 100, 140);
+            Button btnGuncelle = ButonStiliVer("ÜRÜN GÜNCELLE", 175, 100, 160);
+            Button btnSil = ButonStiliVer("SİL", 345, 100, 100);
+
+            this.Controls.Add(btnEkle);
+            this.Controls.Add(btnGuncelle);
+            this.Controls.Add(btnSil);
+
+            // --- ÜRÜN TABLOSU ---
+            dgvUrunler.Location = new Point(25, 160);
+            dgvUrunler.Size = new Size(490, 350);
+            dgvUrunler.BackgroundColor = Color.Black;
+            dgvUrunler.ForeColor = Color.White;
+            dgvUrunler.GridColor = Color.DimGray;
+            dgvUrunler.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvUrunler.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(60, 60, 60);
+            dgvUrunler.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvUrunler.EnableHeadersVisualStyles = false;
+            dgvUrunler.RowHeadersVisible = false;
+
+            dgvUrunler.ColumnCount = 5;
+            dgvUrunler.Columns[0].Name = "ID";
+            dgvUrunler.Columns[1].Name = "ÜRÜN ADI";
+            dgvUrunler.Columns[2].Name = "KATEGORİ";
+            dgvUrunler.Columns[3].Name = "ESKİ FİYAT";
+            dgvUrunler.Columns[4].Name = "YENİ FİYAT";
+
+            // Örnek Veriler (Görseldeki gibi)
+            dgvUrunler.Rows.Add("1", "HAMBURGER", "YİYECEK", "70", "90");
+            dgvUrunler.Rows.Add("2", "PİZZA", "YİYECEK", "70", "90");
+            dgvUrunler.Rows.Add("3", "KOLA", "İÇECEK", "15", "20");
+
+            this.Controls.Add(dgvUrunler);
+
+            // --- ANA MENÜYE DÖN BUTONU ---
+            Button btnGeri = new Button
+            {
+                Text = "ANA MENÜ",
+                Size = new Size(200, 45),
+                Location = new Point(170, 540),
+                BackColor = Color.FromArgb(80, 110, 170),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+            btnGeri.Click += (s, e) => {
+                this.Close();
+                if (Application.OpenForms["Form2"] != null)
+                    Application.OpenForms["Form2"].Show();
+            };
+            this.Controls.Add(btnGeri);
+        }
+
+        private Button ButonStiliVer(string metin, int x, int y, int gen)
+        {
+            return new Button
+            {
+                Text = metin,
+                Location = new Point(x, y),
+                Size = new Size(gen, 40),
+                BackColor = Color.Black,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatAppearance = { BorderColor = Color.White }
+            };
+        }
+    }
+}
