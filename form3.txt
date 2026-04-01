@@ -1,0 +1,120 @@
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace RestorantOtomasyon_2
+{
+    public partial class Form3 : Form
+    {
+        public Form3()
+        {
+            InitializeComponent();
+            MasaEkraniniTasarla();
+        }
+
+        private void MasaEkraniniTasarla()
+        {
+            // Ana Form Ayarları
+            this.Text = "MASA YÖNETİMİ";
+            this.Size = new Size(950, 750);
+            this.BackColor = Color.FromArgb(20, 20, 20); // Koyu siyah arka plan
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            // Üst Başlık (MASA YÖNETİMİ)
+            Label lblBaslik = new Label();
+            lblBaslik.Text = "MASA YÖNETİMİ";
+            lblBaslik.ForeColor = Color.White;
+            lblBaslik.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+            lblBaslik.Dock = DockStyle.Top;
+            lblBaslik.TextAlign = ContentAlignment.MiddleCenter;
+            lblBaslik.Height = 80;
+            this.Controls.Add(lblBaslik);
+
+            // Alt Bilgi Paneli (Görseldeki yeşil/kırmızı göstergesi)
+            Panel pnlAltBilgi = new Panel();
+            pnlAltBilgi.Dock = DockStyle.Bottom;
+            pnlAltBilgi.Height = 60;
+            this.Controls.Add(pnlAltBilgi);
+
+            // Yeşil gösterge
+            Label lblBos = new Label();
+            lblBos.Text = "■ Boş masa : yeşil";
+            lblBos.ForeColor = Color.LimeGreen;
+            lblBos.Font = new Font("Segoe UI", 11);
+            lblBos.AutoSize = true;
+            lblBos.Location = new Point(250, 15);
+            pnlAltBilgi.Controls.Add(lblBos);
+
+            // Kırmızı gösterge
+            Label lblDolu = new Label();
+            lblDolu.Text = "■ Dolu masa : kırmızı";
+            lblDolu.ForeColor = Color.LightCoral;
+            lblDolu.Font = new Font("Segoe UI", 11);
+            lblDolu.AutoSize = true;
+            lblDolu.Location = new Point(480, 15);
+            pnlAltBilgi.Controls.Add(lblDolu);
+
+            // Masaları Dizmek İçin Panel (3 sütunlu yapı)
+            TableLayoutPanel masaPaneli = new TableLayoutPanel();
+            masaPaneli.ColumnCount = 3;
+            masaPaneli.RowCount = 4;
+            masaPaneli.Dock = DockStyle.Fill;
+            masaPaneli.Padding = new Padding(30);
+
+            // Sütun genişliklerini %33, %33, %33 ayarla
+            masaPaneli.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            masaPaneli.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            masaPaneli.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+
+            // Satır yüksekliklerini %25 ayarla
+            for (int i = 0; i < 4; i++)
+            {
+                masaPaneli.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            }
+
+            this.Controls.Add(masaPaneli);
+
+            // Görseldeki gibi yuvarlatılmış köşeler efekti için özel renk tonları
+            Color renkBos = Color.ForestGreen;    // Canlı yeşil (Boş)
+            Color renkDolu = Color.LightCoral;   // Canlı pembe/kırmızı (Dolu)
+
+            // 12 Tane Masayı Döngüyle Oluştur
+            for (int i = 1; i <= 12; i++)
+            {
+                Button btnMasa = new Button();
+                btnMasa.Text = "MASA " + i;
+                btnMasa.Name = "btnMasa" + i;
+                btnMasa.Dock = DockStyle.Fill;
+                btnMasa.Margin = new Padding(15);
+                btnMasa.FlatStyle = FlatStyle.Flat; // Kenarlık kalksın
+                btnMasa.FlatAppearance.BorderSize = 0;
+                btnMasa.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+                btnMasa.ForeColor = Color.White;
+                btnMasa.Cursor = Cursors.Hand;
+
+                // Başlangıçta masalar boş (Yeşil) olsun
+                btnMasa.BackColor = renkBos;
+
+                // Masa Tıklama Olayı (Renk Değiştirme ve Sipariş Paneli)
+                btnMasa.Click += (s, e) => {
+                    Button btn = (Button)s;
+                    if (btn.BackColor == renkBos)
+                    {
+                        btn.BackColor = renkDolu; // Dolu rengi yap
+                        MessageBox.Show(btn.Text + " Açıldı. Sipariş Ekle...");
+                        // BURASI : 
+                        Form4  frm4 = new Form4(btn . Text );
+                        frm4.Show();
+                       
+                    }
+                    else
+                    {
+                        btn.BackColor = renkBos; // Boş rengi yap
+                        MessageBox.Show(btn.Text + " Hesabı Ödendi, şimdi boş.");
+                    }
+                };
+
+                masaPaneli.Controls.Add(btnMasa);
+            }
+        }
+    }
+}

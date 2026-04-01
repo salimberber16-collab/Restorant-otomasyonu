@@ -1,0 +1,121 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace RestorantOtomasyon_2
+{
+    public partial class Form4 : Form
+    {
+        string _masaNo;
+        int toplamTutar = 0;
+        ListBox lstSiparisler = new ListBox();
+        Label lblToplam = new Label();
+
+        public Form4(string masaNo)
+        {
+            InitializeComponent();
+            this._masaNo = masaNo;
+            SiparisEkraniKur();
+        }
+
+        private void SiparisEkraniKur()
+        {
+            // Form Ayarları
+            this.Text = "SİPARİŞ ALMA EKRANI - " + _masaNo;
+            this.Size = new Size(800, 650);
+            this.BackColor = Color.FromArgb(20, 20, 20);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            // MASA NO Başlığı
+            Label lblMasaNo = new Label();
+            lblMasaNo.Text = "MASA NO : " + _masaNo.Replace("MASA ", "");
+            lblMasaNo.ForeColor = Color.White;
+            lblMasaNo.Font = new Font("Segoe UI", 18, FontStyle.Bold);
+            lblMasaNo.Dock = DockStyle.Top;
+            lblMasaNo.Height = 60;
+            lblMasaNo.TextAlign = ContentAlignment.MiddleLeft;
+            lblMasaNo.Padding = new Padding(20, 0, 0, 0);
+            this.Controls.Add(lblMasaNo);
+
+            // Panel Düzeni (Sol: Ürünler, Sağ: Liste)
+            TableLayoutPanel anaPanel = new TableLayoutPanel();
+            anaPanel.Dock = DockStyle.Fill;
+            anaPanel.ColumnCount = 2;
+            anaPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            anaPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            this.Controls.Add(anaPanel);
+
+            // --- SOL TARAF (ÜRÜNLER) ---
+            FlowLayoutPanel pnlUrunler = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoScroll = true };
+            anaPanel.Controls.Add(pnlUrunler, 0, 0);
+
+            // Ürün Listesi (Görseldeki gibi)
+            string[] urunler = { "PİZZA", "HAMBURGER", "PUDİNG", "AYRAN", "KOLA" };
+            int[] fiyatlar = { 150, 120, 60, 20, 35 };
+
+            for (int i = 0; i < urunler.Length; i++)
+            {
+                Panel urunSatir = new Panel { Width = 350, Height = 50 };
+                Label lblAd = new Label { Text = urunler[i], ForeColor = Color.White, Location = new Point(10, 15), Font = new Font("Segoe UI", 12) };
+
+                Button btnEkle = new Button
+                {
+                    Text = "+",
+                    Size = new Size(40, 40),
+                    Location = new Point(280, 5),
+                    BackColor = Color.CornflowerBlue,
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat
+                };
+
+                int fiyat = fiyatlar[i];
+                string ad = urunler[i];
+
+                btnEkle.Click += (s, e) => {
+                    lstSiparisler.Items.Add(ad + " x1");
+                    toplamTutar += fiyat;
+                    lblToplam.Text = "TOPLAM : " + toplamTutar + " TL";
+                };
+
+                urunSatir.Controls.Add(lblAd);
+                urunSatir.Controls.Add(btnEkle);
+                pnlUrunler.Controls.Add(urunSatir);
+            }
+
+            // --- SAĞ TARAF (SİPARİŞ LİSTESİ) ---
+            Panel pnlSag = new Panel { Dock = DockStyle.Fill, Padding = new Padding(20) };
+            anaPanel.Controls.Add(pnlSag, 1, 0);
+
+            lstSiparisler.Dock = DockStyle.Top;
+            lstSiparisler.Height = 300;
+            lstSiparisler.BackColor = Color.FromArgb(30, 30, 30);
+            lstSiparisler.ForeColor = Color.White;
+            pnlSag.Controls.Add(lstSiparisler);
+
+            lblToplam.Text = "TOPLAM : 0 TL";
+            lblToplam.ForeColor = Color.White;
+            lblToplam.Font = new Font("Segoe UI", 15, FontStyle.Bold);
+            lblToplam.Height = 50;
+            lblToplam.Dock = DockStyle.Top;
+            pnlSag.Controls.Add(lblToplam);
+
+            Button btnOnay = new Button
+            {
+                Text = "SİPARİŞİ ONAYLA",
+                Dock = DockStyle.Bottom,
+                Height = 60,
+                BackColor = Color.CornflowerBlue,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            btnOnay.Click += (s, e) => { MessageBox.Show("Sipariş Onaylandı!"); this.Close(); };
+            pnlSag.Controls.Add(btnOnay);
+        }
+
+        private void Form4_Load(object sender, EventArgs e)
+        {
+            // Boş kalabilir, hata vermemesi için ekledik.
+        }
+    }
+}

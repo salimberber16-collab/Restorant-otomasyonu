@@ -1,0 +1,125 @@
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace RestorantOtomasyon_2
+{
+    public partial class Form2 : Form
+    {
+        public Form2()
+        {
+            InitializeComponent();
+            AnaMenuTasarla();
+        }
+
+        private void AnaMenuTasarla()
+        {
+            // Form Genel Ayarları
+            this.Text = "RESTORAN ANA MENÜ";
+            this.Size = new Size(900, 700);
+            this.BackColor = Color.FromArgb(30, 30, 30);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            // Başlık
+            Label lblBaslik = new Label();
+            lblBaslik.Text = "RESTORAN ANA MENÜ";
+            lblBaslik.ForeColor = Color.White;
+            lblBaslik.Font = new Font("Segoe UI", 22, FontStyle.Bold);
+            lblBaslik.Dock = DockStyle.Top;
+            lblBaslik.TextAlign = ContentAlignment.MiddleCenter;
+            lblBaslik.Height = 100;
+            this.Controls.Add(lblBaslik);
+
+            // Butonların Yerleşeceği Panel (3 sütun, 2 satır)
+            TableLayoutPanel panel = new TableLayoutPanel();
+            panel.Dock = DockStyle.Fill;
+            panel.ColumnCount = 2;
+            panel.RowCount = 3;
+            panel.Padding = new Padding(40);
+
+            // Sütun ve Satır Genişlik Ayarları
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
+
+            this.Controls.Add(panel);
+
+            // Buton İsimleri (Görseldekiyle birebir aynı)
+            string[] butonlar = {
+                "MASA İŞLEMLERİ", "MENÜ / ÜRÜNLER",
+                "ÖDEME / KASA", "SİPARİŞ AL",
+                "PERSONEL", "YÖNETİM"
+            };
+
+            foreach (string metin in butonlar)
+            {
+                Button btn = new Button();
+                btn.Text = metin;
+                btn.Dock = DockStyle.Fill;
+                btn.Margin = new Padding(10);
+                btn.BackColor = Color.FromArgb(50, 120, 200);
+                btn.ForeColor = Color.White;
+                btn.FlatStyle = FlatStyle.Flat;
+                btn.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+                btn.Cursor = Cursors.Hand;
+
+                // --- TÜM BUTONLARI AKTİF EDEN TIKLAMA OLAYI ---
+                btn.Click += (s, e) => {
+
+                    if (metin == "MASA İŞLEMLERİ")
+                    {
+                        Form3 frm3 = new Form3();
+                        frm3.Show();
+                        this.Hide();
+                    }
+                    else if (metin == "SİPARİŞ AL")
+                    {
+                        // Form4 parametre aldığı için buraya bir isim gönderiyoruz
+                        Form4 frm4 = new Form4("Hızlı Sipariş");
+                        frm4.Show();
+                        this.Hide();
+                    }
+                    else if (metin == "MENÜ / ÜRÜNLER")
+                    {
+                        // Form8 nesnesini oluşturuyoruz
+                        Form8 frm8 = new Form8();
+                        // Form 8 'i gösteriyoruz 
+                        frm8 .Show();
+                        // Mevcut Form2 ' yi giziyoruz 
+                        this .Hide();  
+                    }
+                    else if (metin == "ÖDEME / KASA")
+                    {
+                        Form5 frm5 = new Form5(); 
+                        // Form5 ' ten yeni bir kopya oluştur 
+                        frm5.Show();
+                        // Ödeme ekranını aç 
+                        this.Hide();
+                        // Form2  gizle 
+                    }
+                    else if (metin == "PERSONEL")
+                    {
+                        // Form 7 ' den nesne oluşturup gösteriyoruz 
+                        Form7 frm7 = new Form7();
+                        frm7.Show();
+                        this.Hide();
+                        // Form2 gizle 
+
+                    }
+                    else if (metin == "YÖNETİM")
+                    {
+                        // Eski hatalı kodları sil , sadece bunları yaz :
+                        RestorantOtomasyon_2.Form9 frm9 = new RestorantOtomasyon_2.Form9();
+                         frm9 .Show();
+                        this.Hide ();
+
+                        
+                    }
+                };
+
+                panel.Controls.Add(btn);
+            }
+        }
+    }
+}

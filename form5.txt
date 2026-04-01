@@ -1,0 +1,163 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace RestorantOtomasyon_2
+{
+    public partial class Form5 : Form
+    {
+        // Değişkenleri en üstte tanımlıyoruz ki her buton ulaşabilsin
+        int toplamTutar = 0;
+        Dictionary<string, int> urunMiktarlari = new Dictionary<string, int>();
+        Label lblToplamFiyat = new Label();
+        Label lblBilgiMesaji = new Label();
+
+        public Form5()
+        {
+            InitializeComponent();
+            TasarimiOlustur();
+        }
+
+        private void TasarimiOlustur()
+        {
+            // Form Genel Ayarları
+            this.Text = "ÖDEME EKRANI";
+            this.Size = new Size(450, 750);
+            this.BackColor = Color.FromArgb(18, 18, 18); // Görseldeki koyu gri/siyah arka plan
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            // --- ÜST PANEL (MASA NO BİLGİSİ) ---
+            Panel pnlHeader = new Panel { Dock = DockStyle.Top, Height = 80 };
+            Label lblMasaNo = new Label
+            {
+                Text = "MASA NO            -  3  +",
+                ForeColor = Color.FromArgb(212, 175, 55), // Altın sarısı detaylar
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            pnlHeader.Controls.Add(lblMasaNo);
+            this.Controls.Add(pnlHeader);
+
+            // --- ÜRÜNLER BAŞLIĞI ---
+            Label lblUrunlerBaslik = new Label
+            {
+                Text = "ÜRÜNLER",
+                ForeColor = Color.Gray,
+                Font = new Font("Segoe UI", 10),
+                Dock = DockStyle.Top,
+                Height = 30,
+                Padding = new Padding(20, 0, 0, 0)
+            };
+            this.Controls.Add(lblUrunlerBaslik);
+
+            // Ürün Verileri
+            string[] urunAdlari = { "PİZZA", "HAMBURGER", "AYRAN", "KOLA", "PUDİNG" };
+            int[] fiyatlar = { 180, 120, 25, 30, 45 };
+
+            // Ürün Satırlarını Oluşturma
+            for (int i = 0; i < urunAdlari.Length; i++)
+            {
+                string ad = urunAdlari[i];
+                int fiyat = fiyatlar[i];
+                urunMiktarlari[ad] = 0;
+
+                Panel pnlSatir = new Panel { Dock = DockStyle.Top, Height = 80, Padding = new Padding(20, 10, 20, 10) };
+
+                Label lblAd = new Label { Text = ad, ForeColor = Color.White, Font = new Font("Segoe UI", 12, FontStyle.Bold), Location = new Point(20, 15), AutoSize = true };
+                Label lblFiyat = new Label { Text = fiyat + " ₺", ForeColor = Color.Gray, Font = new Font("Segoe UI", 10), Location = new Point(20, 40), AutoSize = true };
+
+                // Sayaç Kontrolleri (+ / -)
+                Button btnEksi = new Button { Text = "-", Size = new Size(30, 30), Location = new Point(280, 25), FlatStyle = FlatStyle.Flat, ForeColor = Color.Gray };
+                Label lblAdet = new Label { Text = "0", ForeColor = Color.White, Font = new Font("Segoe UI", 12, FontStyle.Bold), Location = new Point(320, 25), Size = new Size(30, 30), TextAlign = ContentAlignment.MiddleCenter };
+                Button btnArti = new Button { Text = "+", Size = new Size(30, 30), Location = new Point(360, 25), FlatStyle = FlatStyle.Flat, ForeColor = Color.White };
+
+                // ARTI BUTONU: Hem sayıyı hem toplamı artırır
+                btnArti.Click += (s, e) => {
+                    urunMiktarlari[ad]++;
+                    lblAdet.Text = urunMiktarlari[ad].ToString();
+                    toplamTutar += fiyat;
+                    lblToplamFiyat.Text = toplamTutar + " ₺";
+                    lblBilgiMesaji.Visible = false;
+                };
+
+                // EKSİ BUTONU: 0'ın altına düşmeden azaltır
+                btnEksi.Click += (s, e) => {
+                    if (urunMiktarlari[ad] > 0)
+                    {
+                        urunMiktarlari[ad]--;
+                        lblAdet.Text = urunMiktarlari[ad].ToString();
+                        toplamTutar -= fiyat;
+                        lblToplamFiyat.Text = toplamTutar + " ₺";
+                    }
+                };
+
+                pnlSatir.Controls.Add(lblAd);
+                pnlSatir.Controls.Add(lblFiyat);
+                pnlSatir.Controls.Add(btnEksi);
+                pnlSatir.Controls.Add(lblAdet);
+                pnlSatir.Controls.Add(btnArti);
+                this.Controls.Add(pnlSatir);
+            }
+
+            // --- ALT PANEL (TOPLAM VE ONAY) ---
+            Panel pnlFooter = new Panel { Dock = DockStyle.Bottom, Height = 180 };
+
+            lblBilgiMesaji.Text = "HENÜZ ÜRÜN EKLENMEDİ";
+            lblBilgiMesaji.ForeColor = Color.DimGray;
+            lblBilgiMesaji.Font = new Font("Segoe UI", 8);
+            lblBilgiMesaji.Location = new Point(20, 10);
+            lblBilgiMesaji.AutoSize = true;
+
+            Label lblTotalLabel = new Label { Text = "TOPLAM", ForeColor = Color.White, Font = new Font("Segoe UI", 14, FontStyle.Bold), Location = new Point(20, 50), AutoSize = true };
+
+            lblToplamFiyat.Text = "0 ₺";
+            lblToplamFiyat.ForeColor = Color.FromArgb(212, 175, 55);
+            lblToplamFiyat.Font = new Font("Segoe UI", 20, FontStyle.Bold);
+            lblToplamFiyat.Location = new Point(320, 45);
+            lblToplamFiyat.AutoSize = true;
+
+            Button btnGeri = new Button { Text = "TEMİZLE", Size = new Size(180, 50), Location = new Point(20, 110), FlatStyle = FlatStyle.Flat, ForeColor = Color.Gray, BackColor = Color.FromArgb(30, 30, 30) };
+            Button btnOnay = new Button { Text = "ONAYLA", Size = new Size(180, 50), Location = new Point(220, 110), FlatStyle = FlatStyle.Flat, ForeColor = Color.Black, BackColor = Color.FromArgb(212, 175, 55) };
+
+            // Olaylar (Geri Dönüş ve Onay)
+            btnGeri.Click += (s, e) => {
+                this.Close();
+                Form frm2 = Application.OpenForms["Form2"];
+                if (frm2 != null) frm2.Show();
+            };
+
+            btnOnay.Click += (s, e) =>
+            {
+                if (toplamTutar > 0)
+                {
+                    //  Form 6 ' yı oluştururken hesaplanan toplam tutarı oraya gönderiyoruz 
+                    Form6 frm6 = new Form6(toplamTutar);
+                    frm6.Show();
+                    this.Hide();
+                    // ödeme ekranına geçince sipariş listesini gizle 
+                }
+                else
+                {
+                    MessageBox.Show("Sipariş listesi boş ! lütfen önce ürün ekleyin.");
+                }
+
+            
+                    
+            };
+
+            pnlFooter.Controls.Add(lblBilgiMesaji);
+            pnlFooter.Controls.Add(lblTotalLabel);
+            pnlFooter.Controls.Add(lblToplamFiyat);
+            pnlFooter.Controls.Add(btnGeri);
+            pnlFooter.Controls.Add(btnOnay);
+            this.Controls.Add(pnlFooter);
+        }
+
+        private void Form5_Load(object sender, EventArgs e)
+        {
+            // Designer hatasını engellemek için boş bırakıldı
+        }
+    }
+}

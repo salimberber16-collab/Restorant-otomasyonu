@@ -1,0 +1,66 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms; // KRİTİK: Form ve TextBox hatalarını (CS0246) bu satır çözer!
+
+namespace RestorantOtomasyon_2
+{
+    public partial class Form1 : Form
+    {
+        // Kontrolleri burada tanımlıyoruz
+        TextBox txtKullaniciAd = new TextBox();
+        TextBox txtSifre = new TextBox();
+        Button btnGiris = new Button();
+
+        public Form1()
+        {
+            InitializeComponent();
+            GirisEkraniniTasarla();
+        }
+
+        private void GirisEkraniniTasarla()
+        {
+            // Form Ayarları
+            this.Text = "RESTORENT OTOMASYONU - GİRİŞ";
+            this.Size = new Size(400, 500);
+            this.BackColor = Color.FromArgb(30, 30, 30);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            // Kullanıcı Adı Kutusu
+            txtKullaniciAd.Location = new Point(100, 150);
+            txtKullaniciAd.Size = new Size(200, 30);
+            // PlaceholderText hata veriyorsa kullanma, onun yerine label ekleyebilirsin
+            this.Controls.Add(txtKullaniciAd);
+
+            // Şifre Kutusu
+            txtSifre.Location = new Point(100, 200);
+            txtSifre.Size = new Size(200, 30);
+            txtSifre.PasswordChar = '*';
+            this.Controls.Add(txtSifre);
+
+            // Giriş Butonu
+            btnGiris.Text = "GİRİŞ YAP";
+            btnGiris.Location = new Point(100, 260);
+            btnGiris.Size = new Size(200, 45);
+            btnGiris.BackColor = Color.Gold;
+            btnGiris.FlatStyle = FlatStyle.Flat;
+            btnGiris.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            btnGiris.Click += BtnGiris_Click;
+            this.Controls.Add(btnGiris);
+        }
+
+        private void BtnGiris_Click(object sender, EventArgs e)
+        {
+            // admin ve 1234 ile giriş yapabilirsin
+            if (txtKullaniciAd.Text == "admin" && txtSifre.Text == "123456")
+            {
+                Form2 frm2 = new Form2();
+                frm2.Show();
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("Hatalı Giriş!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}

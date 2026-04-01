@@ -1,0 +1,114 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace RestorantOtomasyon_2
+{
+    public partial class Form6 : Form
+    {
+        string secilenOdemeYontemi = "";
+        Button btnNakit = new Button();
+        Button btnKrediKarti = new Button();
+
+        public Form6(int toplamTutar)
+        {
+            InitializeComponent();
+            OdemeOnayTasarla(toplamTutar);
+        }
+
+        private void OdemeOnayTasarla(int tutar)
+        {
+            // Form Ayarları
+            this.Text = "ÖDEME ONAY";
+            this.Size = new Size(400, 500);
+            this.BackColor = Color.FromArgb(15, 15, 15);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            // Masa No Başlığı
+            Label lblMasaNo = new Label
+            {
+                Text = "MASA NO : 3",
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 16, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Size = new Size(350, 60),
+                Location = new Point(25, 20),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            this.Controls.Add(lblMasaNo);
+
+            // Toplam Tutar Alanı
+            Label lblTutar = new Label
+            {
+                Text = "TOPLAM TUTAR : " + tutar + " TL",
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Size = new Size(350, 40),
+                Location = new Point(25, 120)
+            };
+            this.Controls.Add(lblTutar);
+
+            // Çizgi
+            Label lblCizgi = new Label { BackColor = Color.White, Size = new Size(350, 2), Location = new Point(25, 170) };
+            this.Controls.Add(lblCizgi);
+
+            // NAKİT BUTONU
+            btnNakit.Text = "NAKİT";
+            btnNakit.Size = new Size(160, 70);
+            btnNakit.Location = new Point(25, 200);
+            btnNakit.BackColor = Color.Gray;
+            btnNakit.ForeColor = Color.White;
+            btnNakit.FlatStyle = FlatStyle.Flat;
+            btnNakit.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            btnNakit.Click += (s, e) => OdemeSec(btnNakit, "NAKİT");
+            this.Controls.Add(btnNakit);
+
+            // KREDİ KARTI BUTONU
+            btnKrediKarti.Text = "KREDİ KARTI";
+            btnKrediKarti.Size = new Size(160, 70);
+            btnKrediKarti.Location = new Point(215, 200);
+            btnKrediKarti.BackColor = Color.FromArgb(70, 100, 150); // Mavi tonu
+            btnKrediKarti.ForeColor = Color.White;
+            btnKrediKarti.FlatStyle = FlatStyle.Flat;
+            btnKrediKarti.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            btnKrediKarti.Click += (s, e) => OdemeSec(btnKrediKarti, "KREDİ KARTI");
+            this.Controls.Add(btnKrediKarti);
+
+            // ÖDEMEYİ TAMAMLA BUTONU
+            Button btnTamamla = new Button
+            {
+                Text = "ÖDEMEYİ TAMAMLA",
+                Size = new Size(300, 80),
+                Location = new Point(50, 330),
+                BackColor = Color.FromArgb(80, 110, 170),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 13, FontStyle.Bold)
+            };
+            btnTamamla.Click += (s, e) => {
+                if (string.IsNullOrEmpty(secilenOdemeYontemi))
+                {
+                    MessageBox.Show("Lütfen bir ödeme yöntemi seçin!");
+                }
+                else
+                {
+                    MessageBox.Show(secilenOdemeYontemi + " ile ödeme başarıyla alındı.");
+                    this.Close();
+                    Application.OpenForms["Form2"].Show(); // Ana menüye (Form2) dön
+                }
+            };
+            this.Controls.Add(btnTamamla);
+        }
+
+        private void OdemeSec(Button btn, string yontem)
+        {
+            secilenOdemeYontemi = yontem;
+            // Diğer butonların rengini sıfırla, seçileni parlat
+            btnNakit.BackColor = Color.Gray;
+            btnKrediKarti.BackColor = Color.FromArgb(70, 100, 150);
+            btn.BackColor = Color.Gold; // Seçilen buton sarı/altın rengi olur
+            btn.ForeColor = Color.Black;
+        }
+    }
+}
